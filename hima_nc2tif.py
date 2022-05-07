@@ -3,7 +3,9 @@ from osgeo import osr
 import numpy as np
 
 
-def convert(test_fpath):
+def convert(time):
+    test_fpath = "D:\\H8-Data\\Unzip-Data\\Day17\\NC_H08_20190817_" + \
+        time + "_R21_FLDK.02401_02401.nc"
     info = gdal.Info(test_fpath)
 
     ds = gdal.Open(test_fpath, gdal.GA_ReadOnly)
@@ -47,5 +49,14 @@ def convert(test_fpath):
                   0.05, outputBounds=[104.35, 19.23, 106.1, 20.68], resampleAlg=gdal.GRA_NearestNeighbour)
 
 
-test_fpath = r'data\NC_H08_20190831_2350_R21_FLDK.02401_02401.nc'
-convert(test_fpath)
+for hour in range(24):
+    str_hour = '0' + str(hour) if (hour >= 0 and hour <= 9) else str(hour)
+    for min in range(0, 60, 10):
+        if hour == 2 and min == 40:
+            continue
+        elif hour == 14 and min == 40:
+            continue
+        else:
+            str_min = '0' + str(min) if (min == 0) else str(min)
+            time = str_hour + str_min
+            convert(time)
